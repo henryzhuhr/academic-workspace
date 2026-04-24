@@ -1,0 +1,20 @@
+# Local machine files
+.DS_Store
+
+# Repository-local symlink to the external literature file library.
+literature/files
+literature/files/
+
+# Downloaded literature files should stay outside git.
+literature/**/*.pdf
+literature/**/*.epub
+literature/**/*.html
+literature/**/*.htm
+literature/**/*.djvu
+literature/**/*.mobi
+inbox/**/*.pdf
+inbox/**/*.epub
+inbox/**/*.html
+inbox/**/*.htm
+inbox/**/*.djvu
+inbox/**/*.mobi
