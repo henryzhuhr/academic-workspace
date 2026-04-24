@@ -1,1 +1,1 @@
-# academic-workspace
+# Academic Workspace
