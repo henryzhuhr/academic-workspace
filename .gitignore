@@ -1,5 +1,9 @@
 # Local machine files
 .DS_Store
+tmp/
+reports/dist/*.aux
+reports/dist/*.log
+reports/dist/*.out
 
 # Repository-local symlink to the external literature file library.
 literature/files

@@ -23,6 +23,7 @@ AI 助手处理任务前必须先读：
 ├── methods/     # 方法、协议和可复用研究规范，见 methods/README.md
 ├── assets/      # 通用图片、图表和演示素材，见 assets/README.md
 ├── reports/     # 按需生成的总结性报告，见 reports/README.md
+├── tmp/         # 单次会话的临时缓存与脚本，git 忽略
 └── archive/     # 已完成、暂停或废弃内容归档，见 archive/README.md
 ```
 
@@ -40,6 +41,7 @@ AI 助手处理任务前必须先读：
 - 项目、文件夹和机器可读文件使用 `lower-kebab-case`。
 - 日志、周报和会议纪要建议以日期开头，例如 `2026-04-24-weekly-review.md`。
 - 对外输出文件应标明版本或日期，例如 `paper-draft-2026-04-24.pdf`。
+- 脚本中引用用户家目录时统一使用 `$HOME`，不要写死 `/Users/<name>` 绝对路径。
 
 ## AI 助手约束
 
@@ -63,3 +65,4 @@ AI 助手处理任务前必须先读：
 - 具体项目可以在自己的 `README.md` 中补充局部规则。
 - 当局部规则与本文件冲突时，优先遵守更具体、更新且明确说明原因的项目规则。
 - 有 `README.md` 的目录不需要 `.gitkeep`；空目录如果需要被 git 跟踪，则保留 `.gitkeep`。
+- 临时会话文件统一放入 `tmp/session-<YYYYMMDDHHMMSS>/`；该目录用于下载缓冲、一次性脚本和处理中间文件，完成后应删除。

@@ -4,4 +4,10 @@
 
 | Item | Type | Priority | Related Project | Next Action |
 | --- | --- | --- | --- | --- |
-| _TBD_ | _paper/topic/book_ | _TBD_ | _TBD_ | _TBD_ |
+| OWASP Agentic AI Threats and Mitigations | framework | high | `ai-agent-security` | 对齐风险分类 |
+| OWASP Top 10 for Agentic Applications 2026 | framework | high | `ai-agent-security` | 提取 agentic app 风险条目 |
+| NIST AI 600-1 Generative AI Profile | framework | high | `ai-agent-security` | 对齐治理和风险管理语汇 |
+| AgentDojo | paper/benchmark | high | `ai-agent-security` | 已完成首轮精读，后续补 related work 提炼 |
+| Agent Security Bench | paper/benchmark | high | `ai-agent-security` | 已完成首轮精读，后续补 taxonomy 对齐 |
+| ToolEmu | paper/benchmark | medium | `ai-agent-security` | 已完成首轮精读，后续补 risk discovery 对照 |
+| Prompt Injection attack against LLM-integrated Applications | paper | medium | `ai-agent-security` | 已完成首轮精读，后续补基础脉络整理 |

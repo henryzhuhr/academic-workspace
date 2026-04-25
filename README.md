@@ -21,6 +21,7 @@
 ├── methods/     # 方法、协议和可复用研究规范
 ├── assets/      # 通用图片、图表和演示素材
 ├── reports/     # 按需生成的总结性报告
+├── tmp/         # 单次会话的临时缓存与脚本，git 忽略
 └── archive/     # 已完成、暂停或废弃内容归档
 ```
 
@@ -29,3 +30,4 @@
 - 仓库内保存笔记、索引、代码、报告和可追溯记录。
 - 论文 PDF、EPUB、HTML、补充材料等文献文件不进入 git；通过 `literature/files` 软链接指向仓库外文献库。
 - 报告源稿放在 `reports/`，导出的 PDF/DOCX 等成品放在 `reports/dist/`。
+- 一次性下载、临时脚本和处理中间文件放在 `tmp/session-<YYYYMMDDHHMMSS>/`，任务完成后删除整个 session 目录。
