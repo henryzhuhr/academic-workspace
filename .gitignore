@@ -1,11 +1,42 @@
-# Local machine files
+# Operating system and editors
 .DS_Store
+.idea/
+.vscode/
+*.swp
+*~
 
-# Repository-local symlink to the external literature file library.
+# Session-local workspace files
+tmp/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python, R and notebook caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Rproj.user/
+
+# JavaScript dependencies
+node_modules/
+npm-debug.log*
+
+# Repository-local link to the external literature library
 literature/files
 literature/files/
 
-# Downloaded literature files should stay outside git.
+# Literature payloads must stay outside Git
 literature/**/*.pdf
 literature/**/*.epub
 literature/**/*.html

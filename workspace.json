@@ -1,0 +1,26 @@
+{
+  "$schema": "./schemas/workspace.schema.json",
+  "schemaVersion": 2,
+  "name": "academic-workspace",
+  "projectsRoot": "projects",
+  "projectTemplate": "projects/_template",
+  "projectMetadataFile": "project.json",
+  "projectsDashboard": "dashboard/projects.md",
+  "literatureFiles": "literature/files",
+  "bibliography": "literature/bibliography.bib",
+  "projectStatuses": [
+    "active",
+    "writing",
+    "submitted",
+    "idea",
+    "paused",
+    "published",
+    "archived"
+  ],
+  "dataClassifications": [
+    "public",
+    "internal",
+    "sensitive",
+    "restricted"
+  ]
+}

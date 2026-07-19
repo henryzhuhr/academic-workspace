@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "schemaVersion": 1,
+  "id": "replace-with-project-slug",
+  "title": "Replace with project title",
+  "status": "idea",
+  "area": "unclassified",
+  "summary": "",
+  "owner": "",
+  "started": "YYYY-MM-DD",
+  "updated": "YYYY-MM-DD",
+  "nextReview": "YYYY-MM-DD",
+  "nextAction": "Define the research question and scope.",
+  "relatedProjects": [],
+  "tags": [],
+  "dataClassification": "internal"
+}
+

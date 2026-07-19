@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project.schema.json",
+  "title": "Academic Research Project Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "id",
+    "title",
+    "status",
+    "area",
+    "summary",
+    "owner",
+    "started",
+    "updated",
+    "nextReview",
+    "nextAction",
+    "relatedProjects",
+    "tags",
+    "dataClassification"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": ["idea", "active", "paused", "writing", "submitted", "published", "archived"]
+    },
+    "area": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string" },
+    "owner": { "type": "string" },
+    "started": { "$ref": "#/$defs/date" },
+    "updated": { "$ref": "#/$defs/date" },
+    "nextReview": {
+      "anyOf": [
+        { "$ref": "#/$defs/date" },
+        { "const": "" }
+      ]
+    },
+    "nextAction": { "type": "string" },
+    "relatedProjects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dataClassification": {
+      "enum": ["public", "internal", "sensitive", "restricted"]
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "academic-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional JavaScript tooling for the academic workspace",
+  "scripts": {
+    "check": "uv run scripts/workspace.py check",
+    "dashboard": "uv run scripts/workspace.py dashboard",
+    "test": "uv run python -m unittest discover -s tests -v"
+  },
+  "keywords": [
+    "academic-research",
+    "knowledge-workspace",
+    "markdown"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henryzhuhr/academic-workspace.git"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "packageManager": "npm@11.17.0"
+}

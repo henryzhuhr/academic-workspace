@@ -1,0 +1,19 @@
+# Raw and derived data payloads are external by default.
+data/raw/**
+!data/raw/README.md
+data/processed/**
+!data/processed/README.md
+data/locations.local.json
+
+# Keep lightweight run records; ignore bulky run payloads.
+analysis/runs/**
+!analysis/runs/README.md
+!analysis/runs/*.md
+!analysis/runs/*.json
+
+# Project-local secrets and environments.
+.env
+.env.*
+!.env.example
+.venv/
+renv/library/

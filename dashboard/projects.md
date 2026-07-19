@@ -1,7 +1,5 @@
-# Projects Index
+# Projects
 
-本文件维护所有研究项目的全局索引。项目细节仍以 `projects/<project-slug>/README.md` 为准。
+> Generated from `projects/*/project.json` by `uv run scripts/workspace.py dashboard`. Do not edit project rows manually.
 
-| Project | Status | Focus | Next Step | Updated |
-| --- | --- | --- | --- | --- |
-| _TBD_ | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+_No research projects have been created yet._

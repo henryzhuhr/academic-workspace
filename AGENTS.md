@@ -1,65 +1,84 @@
 # AGENTS.md
 
-本文件是 `academic-workspace` 的入口规范，面向本人和所有 AI 助手。仓库定位为长期、多课题、知识库优先的科研工作区。
+本文件是 `academic-workspace` 的全局入口规范，面向本人和所有 AI 助手。工作区采用“Markdown 知识 + JSON 元数据 + 外部大文件”的多课题研究模型。
 
-## 工作方式
+## 启动顺序
 
-AI 助手处理任务前必须先读：
+处理任务前必须依次读取：
 
 1. 本文件。
-2. 任务涉及目录下的 `README.md`。
+2. 任务涉及顶层目录的 `README.md`。
 3. 具体项目或材料目录中的局部说明。
 
-如果目录存在 `README.md`，该文件就是该目录的本地规范；不要把目录细则继续堆进本文件。
+涉及目录结构、元数据、Schema、工作区 CLI 或跨目录规则时，还必须阅读 `ARCHITECTURE.md`。
 
-## 目录索引
+局部规则应写在最接近材料的 `README.md` 中；不要把目录细则继续堆入本文件。
 
-```bash
-.
-├── inbox/       # 临时收集和待整理材料，见 inbox/README.md
-├── dashboard/   # 工作区总览、计划、复盘和索引，见 dashboard/README.md
-├── literature/  # 文献笔记、BibTeX 和外部文献文件入口，见 literature/README.md
-├── projects/    # 具体研究项目，见 projects/README.md
-├── methods/     # 方法、协议和可复用研究规范，见 methods/README.md
-├── assets/      # 通用图片、图表和演示素材，见 assets/README.md
-├── reports/     # 按需生成的总结性报告，见 reports/README.md
-└── archive/     # 已完成、暂停或废弃内容归档，见 archive/README.md
+## 目录职责
+
+```text
+inbox/       临时捕获，定期清空
+dashboard/   全局组合视图、阅读队列和周期复盘
+projects/    具体研究课题；每个课题是独立研究单元
+literature/  跨课题共享的文献引用、笔记和综述
+methods/     可复用的方法、协议和研究规范
+assets/      非项目专属的通用素材
+reports/     跨项目或按需生成的总结报告
+archive/     非项目专属的历史材料
+schemas/     机器可读元数据 Schema
+scripts/     工作区初始化、校验和索引工具
+tests/       工作区工具的隔离回归测试
+pyproject.toml / uv.lock  Python 环境和锁文件
+package.json / package-lock.json  可选 Node 工具环境和锁文件
+tmp/         单次会话临时文件，Git 忽略
 ```
 
-## 全局原则
+## 核心原则
 
-- 知识优先：Markdown 是默认知识载体，重要判断、来源、假设和下一步必须写下来。
-- 可追溯：研究结论应能追溯到文献、笔记、数据、代码、实验记录或明确的推理过程。
-- 原始材料只读：原始数据、文献文件、访谈记录、截图和不可再生文件不得被覆盖。
-- 少搬动：优先在既有结构中补充内容，避免无必要的重命名和批量移动。
-- 轻工具依赖：可使用 Zotero、Obsidian、LaTeX、Python、R、Quarto、Makefile 等工具，但仓库规范不绑定具体工具链。
+- 知识优先：重要判断、来源、假设、限制和下一步必须写入 Markdown。
+- 单一来源：项目研究内容以项目 README 为入口；项目状态以 `project.json` 为唯一机器可读来源。
+- 可追溯：结论必须能回到文献、数据、代码、运行记录、实验记录或明确推理。
+- 原始材料只读：原始数据、访谈、档案、截图和不可再生文件不得覆盖。
+- 共享不复制：跨课题文献、方法和通用素材只保留一份，项目通过相对链接引用。
+- 稳定路径：项目完成后保留在 `projects/<slug>/` 并更新状态，不因归档而移动整个项目。
+- 环境统一：所有工作区 Python 命令通过 `uv run` 执行；CLI 本身只使用 Python 标准库。
+- 工具分层：根 npm 包只承载 Agent 插件、Markdown lint 等可选仓库工具，不定义研究项目运行环境。
 
-## 命名约定
+## 项目规则
 
-- 日期使用 `YYYY-MM-DD`。
-- 项目、文件夹和机器可读文件使用 `lower-kebab-case`。
-- 日志、周报和会议纪要建议以日期开头，例如 `2026-04-24-weekly-review.md`。
-- 对外输出文件应标明版本或日期，例如 `paper-draft-2026-04-24.pdf`。
+- 新项目必须通过 `uv run scripts/workspace.py new <slug>` 或等价地复制 `projects/_template/` 创建。
+- 项目目录名和 `project.json.id` 必须一致，并使用 `lower-kebab-case`。
+- `project.json` 必须符合 `schemas/project.schema.json`；不要在 dashboard 中另建一份项目状态。
+- 项目 README 必须记录研究问题、范围、当前判断、证据、限制和下一步。
+- `data/raw/` 默认不进入 Git；项目的数据登记表必须说明来源、许可、敏感等级、位置和校验信息。
+- 计算型研究必须记录环境、入口、输入、输出和关键运行参数；非计算型项目可在分析说明中标注不适用。
 
-## AI 助手约束
+## 文献规则
 
-- 不得编造文献、DOI、作者、页码、数据来源或实验结果。
-- 不确定的事实必须标记为待验证，或请求联网/用户确认。
-- 不把论文 PDF、EPUB、HTML、补充材料或出版社全文下载到普通仓库目录；全文材料必须通过 `literature/files/` 软链接进入仓库外文献库。
-- 每次启动文献文件、BibTeX、文献笔记或文献报告相关任务时，必须检查 `literature/files` 是否存在且为有效软链接；缺失或失效时，持续提醒用户先创建软链接。
-- 用户要求“总结”“报告”“汇总”“给我看整体情况”时，优先产出到 `reports/`；源稿放 `reports/`，导出的 PDF/DOCX 等成品放 `reports/dist/`；如果未指定格式，先询问要 Markdown、PDF、LaTeX 还是 DOCX。
-- 不进行大规模删除、重命名、移动或格式化，除非用户明确要求。
-- 修改目录规则时，优先更新该目录的 `README.md`；只有影响全仓库的规则才写入本文件。
+- 启动文献文件、BibTeX、文献笔记或文献报告任务时，先检查 `test -L literature/files && test -e literature/files`。
+- 全文 PDF、EPUB、HTML、补充材料和出版社下载文件只通过 `literature/files/` 访问，不进入普通仓库目录。
+- 如果软链接缺失或失效，不得下载文献文件或创建普通 `literature/files/` 目录；应持续提醒用户配置仓库外文献库。
+- 不得编造作者、题名、年份、DOI、页码、来源、数据或实验结果；不确定内容必须标注“待验证”。
 
-## 强制检查项
+## 输出与归档
 
-- 文献库软链接：涉及 `literature/`、文献文件、BibTeX、文献笔记或文献报告时，先执行等价于 `test -L literature/files && test -e literature/files` 的检查。
-- 若 `literature/files` 缺失或不是有效软链接，不要下载文献文件，不要创建普通目录，必须提醒用户配置仓库外文献库软链接。
+- 项目专属论文、图表、幻灯片和交付物放入项目 `outputs/`；其源稿放在 `writing/` 或 `analysis/`。
+- 跨项目总结、阶段汇总和按需报告放在 `reports/`；PDF、DOCX 等导出文件放在 `reports/dist/`。
+- 项目内部旧方案和历史版本进入项目 `archive/`；顶层 `archive/` 只存放不属于某个项目的历史材料。
+- 不进行大规模删除、重命名、移动或格式化，除非用户明确授权。
 
-## 维护规则
+## Git 与临时文件
 
-- 目录规则放在对应目录的 `README.md`。
-- 本仓库本身作为科研工作区模板；fork、clone 或新分支应直接沿用当前目录结构。
-- 具体项目可以在自己的 `README.md` 中补充局部规则。
-- 当局部规则与本文件冲突时，优先遵守更具体、更新且明确说明原因的项目规则。
-- 有 `README.md` 的目录不需要 `.gitkeep`；空目录如果需要被 git 跟踪，则保留 `.gitkeep`。
+- 所有长期课题应在同一主工作分支共存；不要长期“一课题一分支”。
+- 分支仅用于短期变更，完成后合并回主工作分支。
+- 用户已有或未提交的修改必须保留；不得覆盖不可再生材料。
+- 临时会话文件统一放入 `tmp/session-<YYYYMMDDHHMMSS>/`，完成后删除。
+- 脚本引用用户家目录时使用 `$HOME`，不得写死 `/Users/<name>`。
+- Python 依赖通过 `uv add`/`uv remove` 管理并提交 `uv.lock`；Node 工具依赖通过 npm 管理并提交 `package-lock.json`。
+
+## 命名与维护
+
+- 日期使用 `YYYY-MM-DD`；目录和机器可读文件使用 `lower-kebab-case`。
+- 日志、周报和会议纪要以日期开头；对外输出标明日期或版本。
+- 修改目录规则时优先更新该目录的 `README.md`；只有跨目录规则才更新本文件。
+- 结构变更后运行 `uv run scripts/workspace.py check` 和 `uv run python -m unittest discover -s tests -v`；项目状态变更后运行 `uv run scripts/workspace.py dashboard`。

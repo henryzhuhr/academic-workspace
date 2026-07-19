@@ -1,0 +1,10 @@
+[project]
+name = "academic-workspace"
+version = "0.1.0"
+description = "A long-term, multi-project academic research workspace"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.uv]
+package = false

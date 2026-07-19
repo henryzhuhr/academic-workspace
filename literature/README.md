@@ -1,34 +1,30 @@
 # Literature
 
-`literature/` 保存文献笔记、主题综述、引用信息、阅读路线和本地文献文件的软链接入口。论文 PDF、EPUB、HTML、补充材料等全文文件不进入 git 仓库。
+`literature/` 是跨项目共享的文献知识层，保存引用信息、阅读笔记、主题综述和外部全文库的稳定入口。项目通过相对链接引用这里的内容，不在各项目中复制同一份文献笔记。
 
-## 目录结构
+## 结构
 
-```bash
+```text
 literature/
-├── README.md                 # 本目录规范
-├── bibliography.bib          # 全局 BibTeX 引用库
-├── files -> <external-library> # 指向仓库外文献文件库的软链接
-├── reading-notes/            # 单篇文献阅读笔记
-├── topic-reviews/            # 按主题整理的综述和文献脉络
-├── authors/                  # 按作者或研究团队整理的资料
-└── venues/                   # 按期刊、会议、出版社或资料来源整理的信息
+├── bibliography.bib       # 全局 BibTeX 引用库
+├── files -> <external>    # 指向仓库外全文库的本机软链接
+├── reading-notes/         # 一篇文献一份可追溯笔记
+├── topic-reviews/         # 跨文献综合、争议地图和阅读路线
+├── authors/               # 作者、团队、学派与合作网络
+└── venues/                # 期刊、会议、出版社与数据库信息
 ```
 
-## 子目录用途
+## 全文库
 
-- `bibliography.bib`：集中维护引用条目和本地文献文件路径注释。
-- `files`：仓库内稳定入口，实际指向仓库外文献文件库。
-- `reading-notes/`：一篇文献一份笔记，记录摘要、观点、方法、证据和可引用位置。
-- `topic-reviews/`：跨文献的主题综述、概念谱系、争议地图和阅读路线。
-- `authors/`：重要作者、研究团队、学派或合作网络的长期资料。
-- `venues/`：期刊、会议、出版社、数据库或档案来源的投稿、检索和质量信息。
+PDF、EPUB、HTML、补充材料和出版社下载文件不得进入 Git。`literature/files` 必须是指向仓库外文献库的软链接。
 
-## 文献文件软链接
+每次启动文献文件、BibTeX、文献笔记或文献报告任务时先检查：
 
-PDF、EPUB、HTML、补充材料等文献文件可以下载，但实际文件必须存放在仓库外。`literature/files` 是仓库内的稳定入口，具体指向哪里由本机决定。
+```bash
+test -L literature/files && test -e literature/files
+```
 
-通用配置方式：
+通用配置：
 
 ```bash
 EXTERNAL_LITERATURE_DIR="/path/to/external-literature-library"
@@ -36,22 +32,9 @@ mkdir -p "$EXTERNAL_LITERATURE_DIR"
 ln -s "$EXTERNAL_LITERATURE_DIR" "literature/files"
 ```
 
-> 如果希望在 macOS 上用 iCloud Drive 同步论文，可以把目标路径换成：
->
-> ```bash
-> mkdir -p "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Research/Literature"
-> ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Research/Literature" "literature/files"
-> ```
+如果软链接缺失或失效，不得创建普通 `files/` 目录或把全文下载到仓库。BibTeX 和笔记使用稳定的仓库相对路径 `literature/files/...`。
 
-规则：
-
-- `literature/files` 必须是指向仓库外文献库的软链接，不应是普通 git 目录。
-- 克隆仓库、换电脑或执行任何文献相关任务时，先检查 `literature/files` 是否存在且有效：`test -L literature/files && test -e literature/files`。
-- 如果 `literature/files` 缺失或失效，AI 助手必须提醒用户配置软链接；在配置完成前不要下载文献文件或创建普通 `files/` 目录。
-- PDF、EPUB、HTML、补充材料、出版社下载文件等全文材料只通过 `literature/files/` 访问。
-- `bibliography.bib` 和文献笔记中优先使用仓库相对路径 `literature/files/...`。
-
-BibTeX 路径注释格式：
+BibTeX 路径注释示例：
 
 ```bibtex
 % local_file: literature/files/2026/author-short-title.pdf
@@ -63,15 +46,20 @@ BibTeX 路径注释格式：
 }
 ```
 
-## 文献笔记
+## 阅读笔记
 
-文献笔记建议包含：
+从 [reading-notes/template.md](reading-notes/template.md) 创建笔记，文件名优先使用稳定 BibTeX key；若尚无 key，使用 `lower-kebab-case` 临时名并在补全引用后统一更新链接。
 
-- 基本信息：标题、作者、年份、来源、DOI/URL、BibTeX key。
-- 本地文件：如已下载全文或补充材料，记录 `literature/files/...` 路径。
-- 一句话摘要：这篇文献解决什么问题，核心贡献是什么。
-- 关键观点：可复用的概念、论点、结论或反例。
-- 方法与证据：数据、模型、实验、论证方式和局限。
-- 可引用内容：适合未来写作引用的结论，必须标明页码或位置。
-- 关联项目：与哪些项目、问题、写作段落有关。
-- 后续动作：需要精读、复查、复现、比较或引用的位置。
+笔记至少包含：
+
+- 可验证的书目信息与本地文件路径；
+- 一句话贡献、研究问题和语境；
+- 关键主张、证据或方法及具体页码/位置；
+- 方法限制、矛盾和待验证事项；
+- 可复用洞见、关联项目 `id` 和后续行动。
+
+摘要、作者、年份、DOI、页码和结论不得凭空补全。只有核对原始来源后，阅读状态才能标为 `verified`。
+
+## 主题综述
+
+从 [topic-reviews/template.md](topic-reviews/template.md) 开始，记录综述问题、检索范围、纳入标准、已知缺口、主张地图和更新日志。主题综述是跨文献综合，不是阅读笔记的拼接。

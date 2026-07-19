@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workspace.schema.json",
+  "title": "Academic Workspace Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "name",
+    "projectsRoot",
+    "projectTemplate",
+    "projectMetadataFile",
+    "projectsDashboard",
+    "literatureFiles",
+    "bibliography",
+    "projectStatuses",
+    "dataClassifications"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 2 },
+    "name": { "type": "string", "minLength": 1 },
+    "projectsRoot": { "type": "string", "minLength": 1 },
+    "projectTemplate": { "type": "string", "minLength": 1 },
+    "projectMetadataFile": { "type": "string", "minLength": 1 },
+    "projectsDashboard": { "type": "string", "minLength": 1 },
+    "literatureFiles": { "type": "string", "minLength": 1 },
+    "bibliography": { "type": "string", "minLength": 1 },
+    "projectStatuses": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dataClassifications": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
+
