@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "schemaVersion": 1,
+  "id": "ai-agent-security",
+  "title": "AI Agent Security",
+  "status": "active",
+  "area": "ai-security",
+  "summary": "Map the risks, evaluation methods, and governance of tool-using AI agents.",
+  "owner": "",
+  "started": "2026-04-24",
+  "updated": "2026-07-19",
+  "nextReview": "2026-07-26",
+  "nextAction": "Review and refresh the existing agent-security literature map.",
+  "relatedProjects": [],
+  "tags": [
+    "ai-agents",
+    "security"
+  ],
+  "dataClassification": "internal"
+}

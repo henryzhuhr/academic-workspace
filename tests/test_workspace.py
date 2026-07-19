@@ -28,6 +28,12 @@ class WorkspaceCliTest(unittest.TestCase):
                 "__pycache__",
             ),
         )
+        projects_root = self.root / "projects"
+        for project in projects_root.iterdir():
+            if project.is_dir() and project.name != "_template":
+                shutil.rmtree(project)
+        dashboard = self.run_cli("dashboard")
+        self.assertEqual(dashboard.returncode, 0, dashboard.stdout + dashboard.stderr)
 
     def tearDown(self):
         self.temporary_directory.cleanup()
