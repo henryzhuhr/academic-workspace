@@ -71,6 +71,8 @@ tmp/         单次会话临时文件，Git 忽略
 
 - 所有长期课题应在同一主工作分支共存；不要长期“一课题一分支”。
 - 分支仅用于短期变更，完成后合并回主工作分支。
+- 提交信息统一使用“Emoji + Conventional Commits 类型 + 中文描述”，必要时可增加作用域，例如 `✨ feat(projects): 新增课题模板`、`📝 docs: 更新工作区说明`。
+- 常用类型与 Emoji：`✨ feat`、`🐛 fix`、`📝 docs`、`♻️ refactor`、`✅ test`、`🔧 chore`、`👷 ci`、`📦 build`。
 - 用户已有或未提交的修改必须保留；不得覆盖不可再生材料。
 - 临时会话文件统一放入 `tmp/session-<YYYYMMDDHHMMSS>/`，完成后删除。
 - 脚本引用用户家目录时使用 `$HOME`，不得写死 `/Users/<name>`。
