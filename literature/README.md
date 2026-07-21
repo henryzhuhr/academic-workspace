@@ -37,7 +37,7 @@ ln -s "$EXTERNAL_LITERATURE_DIR" "literature/files"
 BibTeX 路径注释示例：
 
 ```bibtex
-% local_file: literature/files/2026/author-short-title.pdf
+% local_file: literature/files/papers/2026/2026-venue-author-short-title.pdf
 @article{author2026short,
   title = {Short Title},
   author = {Author, Alice},
@@ -45,6 +45,28 @@ BibTeX 路径注释示例：
   doi = {10.xxxx/xxxxx}
 }
 ```
+
+## 论文入库
+
+优先使用仓库内的 `archive-paper` Skill，或直接调用统一命令。先预演，核对标题、作者、年份、目标路径和 BibTeX key 后再正式写入：
+
+```bash
+uv run scripts/workspace.py paper add "$HOME/Downloads/paper.pdf" \
+  --project <project-id> \
+  --dry-run
+
+# 确认无误后，使用相同参数移除 --dry-run
+```
+
+命令从 PDF 元数据和文件名生成候选记录，执行时完成以下操作：
+
+- 保留下载源文件，将校验后的副本写入外部库 `papers/<year>/`；
+- 使用 SHA-256 复用已有相同全文，并拒绝同名异内容覆盖；
+- 向 `bibliography.bib` 写入本地相对路径和校验和；
+- 创建状态为 `queued` 的阅读笔记，并按需加入 `dashboard/reading.md`；
+- 用稳定的项目 `id` 记录跨课题关联。
+
+PDF 元数据缺失或不可信时，使用 `--title`、`--author`、`--year`、`--arxiv`、`--doi`、`--url`、`--venue` 或 `--citation-key` 显式修正。自动生成的贡献、主张和限制保持 `_TBD_`，不得根据标题推断。
 
 ## 阅读笔记
 

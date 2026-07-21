@@ -11,7 +11,7 @@ inbox ──整理──> literature / methods / projects
                          │
                          ├──> dashboard（组合视图）
                          └──> reports（跨项目总结）
-projects/<slug> ────────> outputs（项目正式产物）
+projects/<slug> ────────> outputs（产物登记与复现入口）
 ```
 
 - `projects/<slug>/README.md` 是课题的研究入口。
@@ -38,7 +38,7 @@ projects/<slug> ────────> outputs（项目正式产物）
 ├── reports/        # 跨项目或按需生成的总结报告
 ├── archive/        # 非项目专属的历史材料
 ├── schemas/        # 工作区和项目元数据 Schema
-├── scripts/        # 无第三方依赖的工作区工具
+├── scripts/        # 由 uv 管理的工作区命令
 └── tests/          # 工作区工具的隔离回归测试
 ```
 
@@ -56,13 +56,18 @@ uv run scripts/workspace.py new my-research-topic --title "My Research Topic"
 # 根据所有 project.json 重建项目总览
 uv run scripts/workspace.py dashboard
 
+# 预演论文入库；确认后移除 --dry-run
+uv run scripts/workspace.py paper add "$HOME/Downloads/paper.pdf" \
+  --project my-research-topic \
+  --dry-run
+
 # 运行工作区工具测试
 uv run python -m unittest discover -s tests -v
 ```
 
 也可以通过 npm 的便捷入口运行 `npm run check`、`npm run dashboard` 和 `npm test`。根 npm 包设置为 `private`，只承载工作区工具，不发布到 registry。
 
-新项目创建后，先完成项目 README 中的研究问题、边界、证据和下一步，再开始导入材料。
+新项目创建后，先完成项目 README 中的研究问题、边界、证据和下一步，再开始导入材料。下载论文可以调用仓库内的 `archive-paper` Skill，或直接使用 `paper add` 命令；全文只复制到 `literature/files` 指向的外部库，Git 中保存 BibTeX、校验和、阅读笔记和课题关联。
 
 ## Git 策略
 

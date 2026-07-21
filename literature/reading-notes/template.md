@@ -10,6 +10,8 @@
 | Venue | _TBD_ |
 | DOI / URL | _TBD_ |
 | Local file | `literature/files/...` or not available |
+| SHA-256 | _TBD_ |
+| PDF pages | _TBD_ |
 | Reading status | `queued` / `skimmed` / `read` / `verified` |
 | Updated | YYYY-MM-DD |
 
@@ -47,4 +49,3 @@ _TBD_
 ## Follow-up
 
 - _TBD_
-

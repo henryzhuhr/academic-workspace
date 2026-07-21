@@ -1,0 +1,8 @@
+# Inbox files are temporary captures. Keep the Markdown instructions trackable,
+# but do not commit downloaded or generated document payloads.
+**/*.pdf
+**/*.epub
+**/*.html
+**/*.htm
+**/*.djvu
+**/*.mobi

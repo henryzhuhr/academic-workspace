@@ -1,0 +1,11 @@
+# The full-text library is an external symlink, never a Git directory.
+files
+files/**
+
+# Downloaded or generated literature payloads stay outside Git.
+**/*.pdf
+**/*.epub
+**/*.html
+**/*.htm
+**/*.djvu
+**/*.mobi

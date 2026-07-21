@@ -1,0 +1,4 @@
+interface:
+  display_name: "论文入库"
+  short_description: "安全归档论文全文，并自动生成书目、阅读笔记和课题关联记录"
+  default_prompt: "使用 $archive-paper 将下载的论文 PDF 归档到当前研究工作区。"

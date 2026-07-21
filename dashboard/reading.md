@@ -11,5 +11,6 @@
 | Agent Security Bench | `extracting` | high | `ai-agent-security` | 对齐统一 taxonomy | 2026-04-25 |
 | ToolEmu | `extracting` | medium | `ai-agent-security` | 比较 risk discovery 方法 | 2026-04-25 |
 | Prompt injection against LLM-integrated applications | `extracting` | medium | `ai-agent-security` | 补充基础脉络 | 2026-04-25 |
+| [Agent Audit: A Security Analysis System for LLM Agent Applications](../literature/reading-notes/2026-arxiv-zhang-agent-audit-security-analysis.md) | `queued` | high | `ai-agent-security` | 核对核心贡献、方法、限制和对应页码 | 2026-07-19 |
 
 状态建议使用 `queued`、`reading`、`extracting`、`done` 或 `dropped`；项目引用使用稳定的项目 `id`。
