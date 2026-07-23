@@ -17,6 +17,8 @@ from urllib.parse import unquote
 
 from pypdf import PdfReader
 
+from jsonc import load as load_jsonc
+
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_FILE = ROOT / "workspace.json"
@@ -50,6 +52,7 @@ WORKSPACE_KEYS = {
     "projectsDashboard",
     "literatureFiles",
     "bibliography",
+    "literatureCatalog",
     "projectStatuses",
     "dataClassifications",
 }
@@ -70,6 +73,7 @@ REQUIRED_ROOT_PATHS = (
     "projects/README.md",
     "literature/README.md",
     "literature/bibliography.bib",
+    "literature/catalog.json",
     "methods/README.md",
     "methods/data-management.md",
     "methods/reproducibility.md",
@@ -124,16 +128,11 @@ class WorkspaceError(Exception):
 
 def load_json(path: Path) -> Dict[str, Any]:
     try:
-        with path.open("r", encoding="utf-8") as handle:
-            value = json.load(handle)
+        value = load_jsonc(path)
     except FileNotFoundError as exc:
         raise WorkspaceError("缺少文件：{}".format(path.relative_to(ROOT))) from exc
-    except json.JSONDecodeError as exc:
-        raise WorkspaceError(
-            "JSON 无效：{}:{}:{} {}".format(
-                path.relative_to(ROOT), exc.lineno, exc.colno, exc.msg
-            )
-        ) from exc
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise WorkspaceError("JSON/JSONC 无效：{} ({})".format(path.relative_to(ROOT), exc)) from exc
     if not isinstance(value, dict):
         raise WorkspaceError("JSON 根节点必须是对象：{}".format(path.relative_to(ROOT)))
     return value
@@ -165,6 +164,7 @@ def load_config() -> Dict[str, Any]:
         "projectsDashboard",
         "literatureFiles",
         "bibliography",
+        "literatureCatalog",
     ):
         if not isinstance(config[key], str) or not config[key]:
             raise WorkspaceError("workspace.json.{} 必须是非空字符串".format(key))
@@ -443,6 +443,25 @@ def atomic_write_text(path: Path, content: str) -> None:
 
 def write_json(path: Path, value: Dict[str, Any]) -> None:
     atomic_write_text(path, json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+
+def load_literature_catalog(config: Dict[str, Any]) -> Dict[str, Any]:
+    catalog = load_json(workspace_path(config["literatureCatalog"]))
+    if catalog.get("schemaVersion") != 1:
+        raise WorkspaceError("literature/catalog.json 的 schemaVersion 必须为 1")
+    if not isinstance(catalog.get("records"), list):
+        raise WorkspaceError("literature/catalog.json.records 必须是数组")
+    keys = []
+    for index, record in enumerate(catalog["records"]):
+        if not isinstance(record, dict):
+            raise WorkspaceError("literature/catalog.json.records[{}] 必须是对象".format(index))
+        key = record.get("citationKey")
+        if not isinstance(key, str) or not key:
+            raise WorkspaceError("literature/catalog.json.records[{}] 缺少 citationKey".format(index))
+        keys.append(key)
+    if len(keys) != len(set(keys)):
+        raise WorkspaceError("literature/catalog.json 包含重复 citationKey")
+    return catalog
 
 
 def sha256_file(path: Path) -> str:
@@ -890,6 +909,9 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
 
     bibliography = workspace_path(config["bibliography"])
     bibliography_before = bibliography.read_text(encoding="utf-8")
+    catalog_path = workspace_path(config["literatureCatalog"])
+    catalog_before = catalog_path.read_text(encoding="utf-8")
+    catalog = load_literature_catalog(config)
     key_pattern = re.compile(r"@[A-Za-z]+\s*\{\s*" + re.escape(citation_key) + r"\s*,")
     if key_pattern.search(bibliography_before):
         raise WorkspaceError("BibTeX key 已存在：{}".format(citation_key))
@@ -938,6 +960,38 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
         projects,
         today,
     )
+    catalog_record = {
+        "citationKey": citation_key,
+        "title": title,
+        "authors": authors,
+        "year": year,
+        "venue": venue,
+        "identifiers": {
+            "arxiv": arxiv_id,
+            "version": arxiv_version,
+            "doi": args.doi,
+        },
+        "urls": {
+            "abstract": url,
+            "download": args.download_url or (
+                "https://arxiv.org/pdf/{}{}".format(arxiv_id, arxiv_version)
+                if arxiv_id
+                else ""
+            ),
+        },
+        "localFile": local_file,
+        "sha256": checksum,
+        "pdfPages": pages,
+        "readingNote": str(Path("literature/reading-notes") / note_name),
+        "projects": projects,
+        "readingStatus": args.status,
+        "priority": args.priority,
+        "added": today,
+    }
+    catalog_after_value = dict(catalog)
+    catalog_after_value["updated"] = today
+    catalog_after_value["records"] = list(catalog["records"]) + [catalog_record]
+    catalog_after = json.dumps(catalog_after_value, ensure_ascii=False, indent=2) + "\n"
 
     queue_path = ROOT / "dashboard" / "reading.md"
     queue_before = queue_path.read_text(encoding="utf-8")
@@ -958,6 +1012,7 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
     print("作者：{}".format("; ".join(authors)))
     print("目标：{}".format(local_file))
     print("BibTeX：{}".format(citation_key))
+    print("元数据目录：{}".format(catalog_path.relative_to(ROOT)))
     print("阅读笔记：{}".format(note_path.relative_to(ROOT)))
     print("SHA-256：{}".format(checksum))
     if args.dry_run:
@@ -966,6 +1021,7 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
 
     copy_created = False
     bib_written = False
+    catalog_written = False
     note_written = False
     queue_written = False
     target_parent_existed = target.parent.exists()
@@ -975,6 +1031,8 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
             copy_created = True
         atomic_write_text(bibliography, bibliography_after)
         bib_written = True
+        atomic_write_text(catalog_path, catalog_after)
+        catalog_written = True
         atomic_write_text(note_path, note_content)
         note_written = True
         if not args.no_queue:
@@ -987,6 +1045,8 @@ def command_paper_add(config: Dict[str, Any], args: argparse.Namespace) -> int:
             note_path.unlink()
         if bib_written:
             atomic_write_text(bibliography, bibliography_before)
+        if catalog_written:
+            atomic_write_text(catalog_path, catalog_before)
         if copy_created and target.exists():
             target.unlink()
         if not target_parent_existed:
@@ -1012,11 +1072,20 @@ def command_check(config: Dict[str, Any], _args: argparse.Namespace) -> int:
         if not (ROOT / relative).exists():
             errors.append("缺少 {}".format(relative))
 
-    for relative in ("schemas/workspace.schema.json", "schemas/project.schema.json"):
+    for relative in (
+        "schemas/workspace.schema.json",
+        "schemas/project.schema.json",
+        "schemas/literature-catalog.schema.json",
+    ):
         try:
             load_json(ROOT / relative)
         except WorkspaceError as exc:
             errors.append(str(exc))
+
+    try:
+        load_literature_catalog(config)
+    except WorkspaceError as exc:
+        errors.append(str(exc))
 
     template = workspace_path(config["projectTemplate"])
     if not template.is_dir():
@@ -1110,6 +1179,7 @@ def build_parser(config: Dict[str, Any]) -> argparse.ArgumentParser:
     paper_add_parser.add_argument("--arxiv")
     paper_add_parser.add_argument("--doi", default="")
     paper_add_parser.add_argument("--url", default="")
+    paper_add_parser.add_argument("--download-url", default="")
     paper_add_parser.add_argument("--venue", default="")
     paper_add_parser.add_argument("--citation-key")
     paper_add_parser.add_argument("--project", action="append", default=[])

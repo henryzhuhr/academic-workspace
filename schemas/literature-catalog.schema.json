@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "literature-catalog.schema.json",
+  "title": "Academic Workspace Literature Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "updated", "records"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "updated": { "type": "string", "format": "date" },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "citationKey",
+          "title",
+          "authors",
+          "year",
+          "venue",
+          "identifiers",
+          "urls",
+          "localFile",
+          "sha256",
+          "pdfPages",
+          "readingNote",
+          "projects",
+          "readingStatus",
+          "priority",
+          "added"
+        ],
+        "properties": {
+          "citationKey": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "authors": { "type": "array", "items": { "type": "string" } },
+          "year": { "type": "integer", "minimum": 1900 },
+          "venue": { "type": "string" },
+          "identifiers": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["arxiv", "version", "doi"],
+            "properties": {
+              "arxiv": { "type": "string" },
+              "version": { "type": "string" },
+              "doi": { "type": "string" }
+            }
+          },
+          "urls": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["abstract", "download"],
+            "properties": {
+              "abstract": { "type": "string" },
+              "download": { "type": "string" }
+            }
+          },
+          "localFile": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "pdfPages": { "type": "integer", "minimum": 0 },
+          "readingNote": { "type": "string" },
+          "projects": { "type": "array", "items": { "type": "string" } },
+          "readingStatus": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "added": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}

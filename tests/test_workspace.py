@@ -8,6 +8,11 @@ import unittest
 
 from pypdf import PdfWriter
 
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+from jsonc import loads as jsonc_loads
+
 
 SOURCE_ROOT = Path(__file__).resolve().parent.parent
 
@@ -90,7 +95,7 @@ class WorkspaceCliTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
         project = self.root / "projects" / "demo-project"
-        metadata = json.loads((project / "project.json").read_text(encoding="utf-8"))
+        metadata = jsonc_loads((project / "project.json").read_text(encoding="utf-8"))
         self.assertEqual(metadata["id"], "demo-project")
         self.assertEqual(metadata["title"], "Demo Project")
         self.assertEqual(metadata["tags"], ["workspace"])
@@ -114,7 +119,7 @@ class WorkspaceCliTest(unittest.TestCase):
         result = self.run_cli("new", "broken-project")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         metadata_path = self.root / "projects" / "broken-project" / "project.json"
-        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        metadata = jsonc_loads(metadata_path.read_text(encoding="utf-8"))
         del metadata["title"]
         metadata_path.write_text(
             json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -129,7 +134,7 @@ class WorkspaceCliTest(unittest.TestCase):
         first = self.run_cli("new", "existing-project")
         self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
         metadata_path = self.root / "projects" / "existing-project" / "project.json"
-        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        metadata = jsonc_loads(metadata_path.read_text(encoding="utf-8"))
         del metadata["title"]
         metadata_path.write_text(
             json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -171,6 +176,20 @@ class WorkspaceCliTest(unittest.TestCase):
         self.assertIn("@misc{zhang2026testArchivePaper,", bibliography)
         self.assertIn("eprint = {2603.99999}", bibliography)
         self.assertIn("% sha256:", bibliography)
+
+        catalog = jsonc_loads(
+            (self.root / "literature" / "catalog.json").read_text(encoding="utf-8")
+        )
+        record = next(
+            item
+            for item in catalog["records"]
+            if item["citationKey"] == "zhang2026testArchivePaper"
+        )
+        self.assertEqual(record["identifiers"]["arxiv"], "2603.99999")
+        self.assertEqual(record["localFile"], str(
+            Path("literature/files/papers/2026/2026-arxiv-zhang-test-archive-paper-2603.99999v1.pdf")
+        ))
+        self.assertEqual(record["sha256"], catalog["records"][-1]["sha256"])
 
         note = (
             self.root

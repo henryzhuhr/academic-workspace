@@ -20,7 +20,7 @@
 inbox/       临时捕获，定期清空
 dashboard/   全局组合视图、阅读队列和周期复盘
 projects/    具体研究课题；每个课题是独立研究单元
-literature/  跨课题共享的文献引用、笔记和综述
+literature/  跨课题共享的文献引用、元数据索引、笔记和综述
 methods/     可复用的方法、协议和研究规范
 assets/      非项目专属的通用素材
 reports/     跨项目或按需生成的总结报告
@@ -42,6 +42,7 @@ tmp/         单次会话临时文件，Git 忽略
 - 共享不复制：跨课题文献、方法和通用素材只保留一份，项目通过相对链接引用。
 - 稳定路径：项目完成后保留在 `projects/<slug>/` 并更新状态，不因归档而移动整个项目。
 - 环境统一：所有工作区 Python 命令通过 `uv run` 执行；CLI 本身只使用 Python 标准库。
+- JSON 兼容：工作区 `*.json` 保持合法 JSON（天然兼容 JSONC）；Python 工具读取 JSONC 时必须使用 `scripts/jsonc.py`，不得直接调用 `json.load` 读取工作区元数据。
 - 工具分层：根 npm 包只承载 Agent 插件、Markdown lint 等可选仓库工具，不定义研究项目运行环境。
 
 ## 项目规则

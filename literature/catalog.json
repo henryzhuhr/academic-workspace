@@ -1,0 +1,107 @@
+{
+  "$schema": "../schemas/literature-catalog.schema.json",
+  "schemaVersion": 1,
+  "updated": "2026-07-22",
+  "records": [
+    {
+      "citationKey": "liu2023promptInjection",
+      "title": "Prompt Injection attack against LLM-integrated Applications",
+      "authors": ["Liu, Yi and others"],
+      "year": 2023,
+      "venue": "arXiv preprint",
+      "identifiers": {"arxiv": "2306.05499", "version": "", "doi": ""},
+      "urls": {
+        "abstract": "https://arxiv.org/abs/2306.05499",
+        "download": "https://arxiv.org/pdf/2306.05499"
+      },
+      "localFile": "literature/files/papers/2023/2023-arXiv-liu-prompt_injection_attack_against_llm_integrated_applications.pdf",
+      "sha256": "7671887b19dad8ac4d514a45b4701882575860530615edee560c495623064828",
+      "pdfPages": 18,
+      "readingNote": "literature/reading-notes/2023-arxiv-liu-prompt-injection-attack-against-llm-integrated-applications.md",
+      "projects": ["ai-agent-security"],
+      "readingStatus": "full-text first pass",
+      "priority": "medium",
+      "added": "2026-07-22"
+    },
+    {
+      "citationKey": "ruan2023toolemu",
+      "title": "Identifying the Risks of LM Agents with an LM-Emulated Sandbox",
+      "authors": ["Ruan, Yangjun and others"],
+      "year": 2023,
+      "venue": "ICLR 2024 conference paper",
+      "identifiers": {"arxiv": "2309.15817", "version": "", "doi": ""},
+      "urls": {
+        "abstract": "https://arxiv.org/abs/2309.15817",
+        "download": "https://arxiv.org/pdf/2309.15817"
+      },
+      "localFile": "literature/files/papers/2023/2023-arXiv-ruan-identifying_the_risks_of_lm_agents_with_an_lm_emulated_sandbox.pdf",
+      "sha256": "2d746c512086bd47084e616a0848c6dd25052dfe8b6da64e42e4c5e2f0050722",
+      "pdfPages": 70,
+      "readingNote": "literature/reading-notes/2023-arxiv-ruan-identifying-the-risks-of-lm-agents-with-an-lm-emulated-sandbox.md",
+      "projects": ["ai-agent-security"],
+      "readingStatus": "full-text first pass",
+      "priority": "medium",
+      "added": "2026-07-22"
+    },
+    {
+      "citationKey": "debenedetti2024agentdojo",
+      "title": "AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents",
+      "authors": ["Debenedetti, Edoardo and others"],
+      "year": 2024,
+      "venue": "NeurIPS 2024 Datasets and Benchmarks Track",
+      "identifiers": {"arxiv": "2406.13352", "version": "", "doi": ""},
+      "urls": {
+        "abstract": "https://arxiv.org/abs/2406.13352",
+        "download": "https://arxiv.org/pdf/2406.13352"
+      },
+      "localFile": "literature/files/papers/2024/2024-arXiv-debenedetti-agentdojo.pdf",
+      "sha256": "349884fffbf43282591c5accffd57bb651632f38e412fe303114941bdd111b05",
+      "pdfPages": 26,
+      "readingNote": "literature/reading-notes/2024-arxiv-debenedetti-agentdojo.md",
+      "projects": ["ai-agent-security"],
+      "readingStatus": "full-text first pass",
+      "priority": "medium",
+      "added": "2026-07-22"
+    },
+    {
+      "citationKey": "zhang2024asb",
+      "title": "Agent Security Bench (ASB): Formalizing and Benchmarking Attacks and Defenses in LLM-based Agents",
+      "authors": ["Zhang, Zhexin and others"],
+      "year": 2024,
+      "venue": "ICLR 2025 conference paper",
+      "identifiers": {"arxiv": "2410.02644", "version": "", "doi": ""},
+      "urls": {
+        "abstract": "https://arxiv.org/abs/2410.02644",
+        "download": "https://arxiv.org/pdf/2410.02644"
+      },
+      "localFile": "literature/files/papers/2024/2024-arXiv-zhang-agent_security_bench.pdf",
+      "sha256": "e20155df01b3a1f6c0a947c4e9e4871957cff2e507939f7ea21a5fe967d84504",
+      "pdfPages": 36,
+      "readingNote": "literature/reading-notes/2024-arxiv-zhang-agent-security-bench.md",
+      "projects": ["ai-agent-security"],
+      "readingStatus": "full-text first pass",
+      "priority": "medium",
+      "added": "2026-07-22"
+    },
+    {
+      "citationKey": "zhang2026agentAuditSecurityAnalysis",
+      "title": "Agent Audit: A Security Analysis System for LLM Agent Applications",
+      "authors": ["Zhang, Haiyue", "Nian, Yi", "Zhao, Yue"],
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "identifiers": {"arxiv": "2603.22853", "version": "v1", "doi": ""},
+      "urls": {
+        "abstract": "https://arxiv.org/abs/2603.22853v1",
+        "download": "https://arxiv.org/pdf/2603.22853v1"
+      },
+      "localFile": "literature/files/papers/2026/2026-arxiv-zhang-agent-audit-security-analysis-2603.22853v1.pdf",
+      "sha256": "9be692858841bc07eb38c75a93828b87e7880bd8042bb7e5fd9fa1a2c7de9ddf",
+      "pdfPages": 5,
+      "readingNote": "literature/reading-notes/2026-arxiv-zhang-agent-audit-security-analysis.md",
+      "projects": ["ai-agent-security"],
+      "readingStatus": "read",
+      "priority": "medium",
+      "added": "2026-07-22"
+    }
+  ]
+}

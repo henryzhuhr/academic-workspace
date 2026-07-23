@@ -65,7 +65,8 @@ flowchart LR
 | 元数据结构 | `schemas/*.schema.json` | README 中的人类可读说明 |
 | 项目状态、分类和复盘日期 | `projects/<slug>/project.json` | `dashboard/projects.md` |
 | 项目当前问题、综合判断和限制 | 项目 `README.md` | 项目笔记中的过程记录，报告和汇报材料 |
-| 文献引用 | `literature/bibliography.bib` | 阅读笔记和项目引用 |
+| 论文元数据、文件路径和下载地址 | `literature/catalog.json` | BibTeX、阅读笔记和阅读队列 |
+| 文献引用 | `literature/bibliography.bib` | 论文元数据目录、阅读笔记和项目引用 |
 | 文献综合 | `literature/reading-notes/`, `topic-reviews/` | 项目笔记和报告中的引用 |
 | 数据集登记、分类和当前位置 | 项目 `data/README.md` | `data/metadata/` 中的数据字典、清单和校验文件 |
 | 分析复现方式 | 项目 `analysis/README.md` 和运行记录 | 输出产物说明 |
@@ -123,7 +124,7 @@ stateDiagram-v2
 
 ## 5. Metadata and consistency model
 
-项目元数据采用 JSON，因为它无需第三方解析器、可由 JSON Schema 描述，并适合由编辑器和脚本共同维护。复杂研究内容不进入 JSON，避免把知识压缩成脆弱字段。
+项目元数据采用 JSON/JSONC，因为它可由 JSON Schema 描述，并适合由编辑器和脚本共同维护。仓库文件默认写成严格 JSON，以兼容所有标准工具；工作区 Python 读取入口通过 `scripts/jsonc.py` 额外支持注释和尾逗号。复杂研究内容不进入 JSON，避免把知识压缩成脆弱字段。
 
 当前版本契约为：根 `workspace.json.schemaVersion = 2`，各项目 `project.json.schemaVersion = 1`。CLI 只接受它明确支持的版本，遇到未知版本直接失败，且不得在读取时自动升级。
 
@@ -173,7 +174,7 @@ Git 仓库是知识、元数据和可复现过程的边界，不是所有研究�
 - `new`：从 `_template` 创建项目，与 dashboard 更新共同提交或共同回滚；
 - `check`：只读验证工作区；
 - `dashboard`：从权威元数据重建项目总览；
-- `paper add`：预演或执行论文全文复制、校验、去重，以及 BibTeX、阅读笔记、队列和课题关联的联合登记。
+- `paper add`：预演或执行论文全文复制、校验、去重，以及论文元数据目录、BibTeX、阅读笔记、队列和课题关联的联合登记。
 
 除 `paper add` 外，CLI 不读取或修改外部文献全文。`paper add` 只能通过有效软链接访问仓库外全文库，使用复制与 SHA-256 校验，不删除下载源文件、不覆盖冲突内容，并对本次联合写入执行回滚。CLI 不处理项目研究数据，也不替代项目自己的分析工作流。
 

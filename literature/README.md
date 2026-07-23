@@ -7,6 +7,7 @@
 ```text
 literature/
 ├── bibliography.bib       # 全局 BibTeX 引用库
+├── catalog.json           # 论文元数据、下载地址、本地文件和校验和索引
 ├── files -> <external>    # 指向仓库外全文库的本机软链接
 ├── reading-notes/         # 一篇文献一份可追溯笔记
 ├── topic-reviews/         # 跨文献综合、争议地图和阅读路线
@@ -63,10 +64,11 @@ uv run scripts/workspace.py paper add "$HOME/Downloads/paper.pdf" \
 - 保留下载源文件，将校验后的副本写入外部库 `papers/<year>/`；
 - 使用 SHA-256 复用已有相同全文，并拒绝同名异内容覆盖；
 - 向 `bibliography.bib` 写入本地相对路径和校验和；
+- 向 `catalog.json` 写入统一的机器可读元数据，包括标识符、下载地址、本地文件、校验和、页数、阅读笔记和课题关联；
 - 创建状态为 `queued` 的阅读笔记，并按需加入 `dashboard/reading.md`；
 - 用稳定的项目 `id` 记录跨课题关联。
 
-PDF 元数据缺失或不可信时，使用 `--title`、`--author`、`--year`、`--arxiv`、`--doi`、`--url`、`--venue` 或 `--citation-key` 显式修正。自动生成的贡献、主张和限制保持 `_TBD_`，不得根据标题推断。
+PDF 元数据缺失或不可信时，使用 `--title`、`--author`、`--year`、`--arxiv`、`--doi`、`--url`、`--download-url`、`--venue` 或 `--citation-key` 显式修正。自动生成的贡献、主张和限制保持 `_TBD_`，不得根据标题推断。
 
 ## 阅读笔记
 

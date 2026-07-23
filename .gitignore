@@ -16,6 +16,7 @@
 .claude/settings.local.json
 .claude/*.lock
 .claude/autonomy/
+.claude/worktrees/
 .omc/*
 !.omc/skills/
 

@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "davidanson.vscode-markdownlint",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "redhat.vscode-yaml",
+    "james-yu.latex-workshop",
+    "eamodio.gitlens",
+    "tecosaur.latex-utilities",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-preview-github-styles",
+    "pkief.material-icon-theme",
+    "mhutchie.git-graph",
+    "tomoki1207.pdf"
+  ],
+  "unwantedRecommendations": []
+}

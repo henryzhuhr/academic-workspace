@@ -6,6 +6,7 @@
 
 - [data-management.md](data-management.md)：数据分类、存储、登记、不可变性和敏感材料处理。
 - [reproducibility.md](reproducibility.md)：计算环境、输入输出、运行记录和最低复现要求。
+- [arxiv-search.md](arxiv-search.md)：使用 arXiv 官方 API 检索、记录和筛选论文。
 
 ## 适合存放
 

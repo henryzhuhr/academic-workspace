@@ -8,6 +8,7 @@
   "projectsDashboard": "dashboard/projects.md",
   "literatureFiles": "literature/files",
   "bibliography": "literature/bibliography.bib",
+  "literatureCatalog": "literature/catalog.json",
   "projectStatuses": [
     "active",
     "writing",
